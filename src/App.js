@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
@@ -6,7 +6,7 @@ function App() {
   const [jog2 , setjog2] = useState([]);
   const [jogada ,  setjogada] = useState(0);
   const [winer , setwiner] = useState('');
-
+  const [render, setrender] = useState(false);
 
 
 
@@ -60,21 +60,31 @@ function App() {
     }else if (jog2.includes(3) === true && jog2.includes(5) === true && jog2.includes(7) === true){
       setwiner('jogador 2 venceu')
     }
-    
-    console.log(jog1)
-    console.log(jog1[0] === 1 && jog1[1] === 2 && jog2[2] === 2)
     setjogada(jogada + 1);
   }
+
+
+  useEffect(()=>{
+    if(jogada !== 0){ 
+      setrender(true)
+    }
+      
+  },[winer])
 
   return  (
     <div className="game">
       <h1>Jogo da velha</h1>
-      jogador 1 :{jog1}<br/>
-      jogador 2 :{jog2}<br/>
-      jogada {jogada}<br/>
+
+
       vencedor : {winer}
       
       <div className='table-game'>
+          {render === true &&
+            <div className='sobrepor'>
+
+            </div>
+          }
+
           <div className='linha'>
                   { jog1.includes(1) === true &&
                    <div className='a'>
@@ -218,6 +228,11 @@ function App() {
                   }
           </div>
       </div>
+      <br/>
+      <br/>
+      <br/>
+      
+      <button onClick={()=> {setjog1([null]); setjog2([null]); setwiner(''); setrender(false); setjogada(0) }}>reset</button>
     </div>
   );
 }
